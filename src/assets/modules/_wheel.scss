@@ -1,0 +1,35 @@
+.wheel-container {
+  @include display-row;
+  .wheel {
+    @include display-row;
+    @include align-justify-center;
+    width: 30rem;
+    height: 30rem;
+    border-radius: 50%;
+    background-color: $grey-300;
+    border: 0.5rem solid $grey-200;
+    box-shadow: 0px 3.16862px 6.33724px rgba(0, 0, 0, 0.12);
+    background-image: repeating-conic-gradient(
+      $maroon-400 0 45deg,
+      $maroon-600 45deg 90deg,
+      $maroon-700 90deg 135deg,
+      $maroon-500 135deg 180deg
+    );
+    .spin-container {
+      @include display-row;
+      @include align-justify-center;
+      background-color: $yellow-500;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 50%;
+      .spin-inner {
+        background-color: $yellow-500;
+        width: 6rem;
+        height: 6rem;
+        border-radius: 50%;
+
+        box-shadow: 0px 3.74199px 3.74199px rgba($yellow-800, 0.25);
+      }
+    }
+  }
+}
