@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { Modal, Button } from "react-bootstrap";
 
 import FullProgressArrow from "../../common/fullProgressArrow";
 import EmptyProgressArrow from "../../common/emptyProgressArrow";
@@ -10,6 +11,10 @@ const Wheel = () => {
   const [duration, setDuration] = useState(1);
   const [progressWidth, setProgressWidth] = useState(0);
   const [charge, setCharge] = useState(0);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const refEl = useRef(null);
   const fullProgressArrowRef = useRef(null);
@@ -30,14 +35,7 @@ const Wheel = () => {
       });
     }
   });
-  useEffect(() => {
-    if (animateAngle !== 0) {
-      console.log(animateAngle);
-      setTimeout(() => {
-        setAnimateAngle(0);
-      }, 1000);
-    }
-  }, [animateAngle]);
+
   useEffect(() => {
     if (center.x !== 0) {
       let active = false,
@@ -106,7 +104,7 @@ const Wheel = () => {
         <div className="wheel" ref={refEl}>
           <motion.div
             animate={{ rotate: animateAngle }}
-            transition={{ duration:0 }}
+            transition={{ duration }}
             className="inner-wheel"
             id="wheel-rotate"
           >
@@ -145,6 +143,20 @@ const Wheel = () => {
         <FullProgressArrow progressWidth={progressWidth} />
         <EmptyProgressArrow />
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
