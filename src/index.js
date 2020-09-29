@@ -1,11 +1,10 @@
 import React from "react";
 import App from "./App";
-import "./assets/main.scss";
+import "./styles/main.scss";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as OfflinePluginRuntime from "offline-plugin/runtime";
 OfflinePluginRuntime.install();
-
 
 render(
   <Router>
