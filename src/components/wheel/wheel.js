@@ -1,25 +1,56 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { Modal, Button } from "react-bootstrap";
+import $ from "jquery";
 
+import Stopper from "../../common/stopper";
 import FullProgressArrow from "../../common/fullProgressArrow";
 import EmptyProgressArrow from "../../common/emptyProgressArrow";
 
 const Wheel = () => {
   const [center, setCenter] = useState({ x: 0, y: 0 });
-  const [animateAngle, setAnimateAngle] = useState(0);
-  const [duration, setDuration] = useState(1);
   const [progressWidth, setProgressWidth] = useState(0);
-  const [charge, setCharge] = useState(0);
   const [show, setShow] = useState(false);
+  const INR_SYMBOL = "₹";
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const refEl = useRef(null);
-  const fullProgressArrowRef = useRef(null);
   const deltaAngle = (pR, cR) => {
     return pR - cR;
+  };
+  const spin = (progress) => {
+    var degree = 1800;
+
+    /*multiply the degree by number of clicks
+	  generate random number between 1 - 360,
+    then add to the new degree*/
+    var newDegree = degree * progress;
+    $(".wheel .sec").each(function () {
+      // var t = $(this);
+
+      // var c = 0;
+      // var n = 700;
+      // var interval = setInterval(function () {
+      //   c++;
+      //   if (c === n) {
+      //     clearInterval(interval);
+      //   }
+
+      //   var aoY = t.offset().top;
+      //   console.log(aoY);
+      //   if (aoY < 300) {
+      //     $("#spin").addClass("spin");
+      //     setTimeout(function () {
+      //       $("#spin").removeClass("spin");
+      //     }, 100);
+      //   }
+      // }, 10);
+
+      $(".inner-wheel").css({
+        transform: "rotate(" + newDegree + "deg)",
+      });
+    });
   };
   useEffect(() => {
     if (center.x === 0) {
@@ -48,13 +79,11 @@ const Wheel = () => {
         dangle;
 
       const dprogress = 1;
-      console.log(fullProgressArrowRef);
       refEl.current.addEventListener("mouseup", (e) => {
         e.preventDefault();
         angle += rotation;
         if (dangle > 0 && progress > 82) {
-          console.log(progress);
-          setAnimateAngle(progress * 10);
+          spin(progress / 100);
           progress = 0;
           setProgressWidth(0);
         }
@@ -100,41 +129,54 @@ const Wheel = () => {
   }, [center]);
   return (
     <div className="fortune-container">
+      <div className="stopper-container" id="spin">
+        <Stopper />
+      </div>
       <div className="wheel-container">
         <div className="wheel" ref={refEl}>
-          <motion.div
-            animate={{ rotate: animateAngle }}
-            transition={{ duration }}
-            className="inner-wheel"
-            id="wheel-rotate"
-          >
+          <div className="inner-wheel" id="wheel-rotate">
             <div className="sec">
-              <span className="fa fa-bell-o"></span>
+              <span className="sec-text">
+                Better luck <br /> next time!
+              </span>
             </div>
             <div className="sec">
-              <span className="fa fa-comment-o"></span>
+              <span className="sec-text">{INR_SYMBOL} 50</span>
             </div>
             <div className="sec">
-              <span className="fa fa-smile-o"></span>
+              <span className="sec-text">
+                2X <br />
+                <span className="sec-subtext">Savings</span>
+              </span>
             </div>
             <div className="sec">
-              <span className="fa fa-heart-o"></span>
+              <span className="sec-text">
+                1.5X <br />
+                <span className="sec-subtext">Savings</span>
+              </span>
             </div>
             <div className="sec">
-              <span className="fa fa-star-o"></span>
+              <span className="sec-text">{INR_SYMBOL} 50</span>
             </div>
             <div className="sec">
-              <span className="fa fa-lightbulb-o"></span>
+              <span className="sec-text">{INR_SYMBOL} 20</span>
             </div>
             <div className="sec">
-              <span className="fa fa-lightbulb-o"></span>
+              <span className="sec-text">
+                {INR_SYMBOL} 100
+                <br />
+                <span className="sec-subtext">Cashback</span>
+              </span>
             </div>
             <div className="sec">
-              <span className="fa fa-lightbulb-o"></span>
+              <span className="sec-text">
+                2X <br />
+                <span className="sec-subtext">Savings</span>
+              </span>
             </div>
-          </motion.div>
+          </div>
         </div>
-        <div className="spin-container" id="spin">
+        <div className="spin-container">
           <div className="spin-inner" />
         </div>
       </div>

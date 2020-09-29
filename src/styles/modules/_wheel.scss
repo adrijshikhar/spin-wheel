@@ -1,6 +1,11 @@
 .fortune-container {
   @include display-column;
   @include align-justify-center;
+  .stopper-container {
+    top: 21%;
+    position: absolute;
+    z-index: 200;
+  }
   .wheel-container {
     @include display-row;
     .wheel {
@@ -11,12 +16,15 @@
       overflow: hidden;
       border: 8px solid #fff;
       box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px, rgba(0, 0, 0, 0.05) 0px 3px 0px;
-      background-color: $maroon-400;
-      transform: rotate(0deg);
-      #wheel-rotate {
-        transform-origin: 12rem 12rem;
-      }
+      z-index: 0;
+
       .inner-wheel {
+        background-image: repeating-conic-gradient(
+          $maroon-400 45deg 90deg,
+          $maroon-600 90deg 135deg,
+          $maroon-700 135deg 180deg,
+          $maroon-500 180deg 225deg
+        );
         width: 100%;
         height: 100%;
         -webkit-transition: all 6s cubic-bezier(0, 0.99, 0.44, 0.99);
@@ -35,69 +43,104 @@
         left: 6rem;
         top: -2.5rem;
         opacity: 1;
+        .sec-text {
+          margin-top: -110px;
+          color: $white;
+          white-space: nowrap;
+          position: relative;
+          z-index: 10000000;
+          display: block;
+          text-align: center;
+          font-size: 1rem;
+          margin-left: 26px;
+          transform: rotate(-66deg);
+          .sec-subtext {
+            font-size: 0.75rem;
+            color: #ffffffde;
+          }
+        }
         &:nth-child(1) {
-          transform: rotate(45deg);
-          -webkit-transform: rotate(45deg);
-          -moz-transform: rotate(45deg);
-          -o-transform: rotate(45deg);
-          -ms-transform: rotate(45deg);
-          border-color: $maroon-400 transparent;
-        }
-        &:nth-child(2) {
-          transform: rotate(90deg);
-          -webkit-transform: rotate(90deg);
-          -moz-transform: rotate(90deg);
-          -o-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
-          border-color: $maroon-600 transparent;
-        }
-        &:nth-child(3) {
-          transform: rotate(135deg);
-          -webkit-transform: rotate(135deg);
-          -moz-transform: rotate(135deg);
-          -o-transform: rotate(135deg);
-          -ms-transform: rotate(135deg);
-          border-color: $maroon-700 transparent;
-        }
-        &:nth-child(4) {
-          transform: rotate(180deg);
-          -webkit-transform: rotate(180deg);
-          -moz-transform: rotate(180deg);
-          -o-transform: rotate(180deg);
-          -ms-transform: rotate(180deg);
-          border-color: $maroon-500 transparent;
-        }
-        &:nth-child(5) {
-          transform: rotate(225deg);
-          -webkit-transform: rotate(225deg);
-          -moz-transform: rotate(225deg);
-          -o-transform: rotate(225deg);
-          -ms-transform: rotate(225deg);
-          border-color: $maroon-400 transparent;
-        }
-        &:nth-child(6) {
-          transform: rotate(270deg);
-          -webkit-transform: rotate(270deg);
-          -moz-transform: rotate(270deg);
-          -o-transform: rotate(270deg);
-          -ms-transform: rotate(270deg);
-          border-color: $maroon-600 transparent;
-        }
-        &:nth-child(7) {
-          transform: rotate(315deg);
-          -webkit-transform: rotate(315deg);
-          -moz-transform: rotate(315deg);
-          -o-transform: rotate(315deg);
-          -ms-transform: rotate(315deg);
-          border-color: $maroon-700 transparent;
-        }
-        &:nth-child(8) {
           transform: rotate(0deg);
           -webkit-transform: rotate(0deg);
           -moz-transform: rotate(0deg);
           -o-transform: rotate(0deg);
           -ms-transform: rotate(0deg);
-          border-color: $maroon-500 transparent;
+          border-color: transparent;
+        }
+        &:nth-child(2) {
+          transform: rotate(45deg);
+          -webkit-transform: rotate(45deg);
+          -moz-transform: rotate(45deg);
+          -o-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          border-color: transparent;
+        }
+        &:nth-child(3) {
+          .sec-text {
+            margin-left: 32px;
+          }
+          transform: rotate(90deg);
+          -webkit-transform: rotate(90deg);
+          -moz-transform: rotate(90deg);
+          -o-transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+          border-color: transparent;
+        }
+        &:nth-child(4) {
+          .sec-text {
+            margin-left: 40px;
+          }
+          transform: rotate(135deg);
+          -webkit-transform: rotate(135deg);
+          -moz-transform: rotate(135deg);
+          -o-transform: rotate(135deg);
+          -ms-transform: rotate(135deg);
+          border-color: transparent;
+        }
+        &:nth-child(5) {
+          .sec-text {
+            margin-left: 40px;
+          }
+          transform: rotate(180deg);
+          -webkit-transform: rotate(180deg);
+          -moz-transform: rotate(180deg);
+          -o-transform: rotate(180deg);
+          -ms-transform: rotate(180deg);
+          border-color: transparent;
+        }
+        &:nth-child(6) {
+          .sec-text {
+            margin-left: 40px;
+          }
+          transform: rotate(225deg);
+          -webkit-transform: rotate(225deg);
+          -moz-transform: rotate(225deg);
+          -o-transform: rotate(225deg);
+          -ms-transform: rotate(225deg);
+          border-color: transparent;
+        }
+        &:nth-child(7) {
+          .sec-text {
+            margin-left: 40px;
+          }
+          transform: rotate(270deg);
+          -webkit-transform: rotate(270deg);
+          -moz-transform: rotate(270deg);
+          -o-transform: rotate(270deg);
+          -ms-transform: rotate(270deg);
+          border-color: transparent;
+        }
+        &:nth-child(8) {
+          .sec-text {
+            margin-top: -130px;
+            margin-left: 32px;
+          }
+          transform: rotate(315deg);
+          -webkit-transform: rotate(315deg);
+          -moz-transform: rotate(315deg);
+          -o-transform: rotate(315deg);
+          -ms-transform: rotate(315deg);
+          border-color: transparent;
         }
       }
     }
