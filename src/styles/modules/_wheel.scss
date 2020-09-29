@@ -1,4 +1,4 @@
-.spin-container {
+.fortune-container {
   @include display-column;
   @include align-justify-center;
   .wheel-container {
@@ -115,6 +115,7 @@
       left: 0;
       right: 0;
       border-radius: 50%;
+      z-index: 100;
       .spin-inner {
         background-color: $yellow-500;
         width: 6rem;

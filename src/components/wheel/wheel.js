@@ -7,7 +7,7 @@ import EmptyProgressArrow from "../../common/emptyProgressArrow";
 const Wheel = () => {
   const [center, setCenter] = useState({ x: 0, y: 0 });
   const [animateAngle, setAnimateAngle] = useState(0);
-  const [duration, setDuration] = useState(0.001);
+  const [duration, setDuration] = useState(1);
   const [progressWidth, setProgressWidth] = useState(0);
   const [charge, setCharge] = useState(0);
 
@@ -30,7 +30,14 @@ const Wheel = () => {
       });
     }
   });
-
+  useEffect(() => {
+    if (animateAngle !== 0) {
+      console.log(animateAngle);
+      setTimeout(() => {
+        setAnimateAngle(0);
+      }, 1000);
+    }
+  }, [animateAngle]);
   useEffect(() => {
     if (center.x !== 0) {
       let active = false,
@@ -39,13 +46,20 @@ const Wheel = () => {
         angle = 0,
         rotation = 0,
         pR = 0,
-        progress = 0;
+        progress = 0,
+        dangle;
 
       const dprogress = 1;
       console.log(fullProgressArrowRef);
       refEl.current.addEventListener("mouseup", (e) => {
         e.preventDefault();
         angle += rotation;
+        if (dangle > 0 && progress > 82) {
+          console.log(progress);
+          setAnimateAngle(progress * 10);
+          progress = 0;
+          setProgressWidth(0);
+        }
         return (active = false);
       });
       refEl.current.addEventListener(
@@ -67,8 +81,7 @@ const Wheel = () => {
         let y = e.clientY - center.y;
         let d = R2D * Math.atan2(y, x);
         rotation = d - startAngle;
-        // console.log(rotation);
-        let dangle = deltaAngle(pR, rotation);
+        dangle = deltaAngle(pR, rotation);
         if (dangle > 0) {
           if (progress < 250) {
             progress += dprogress;
@@ -88,12 +101,12 @@ const Wheel = () => {
     }
   }, [center]);
   return (
-    <div className="spin-container">
+    <div className="fortune-container">
       <div className="wheel-container">
         <div className="wheel" ref={refEl}>
           <motion.div
             animate={{ rotate: animateAngle }}
-            transition={{ duration }}
+            transition={{ duration:0 }}
             className="inner-wheel"
             id="wheel-rotate"
           >
