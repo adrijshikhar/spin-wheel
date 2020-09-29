@@ -1,41 +1,4 @@
 /* Util Rules */
-.overflow-hidden-scrollbar-hidden {
-  -ms-overflow-style: none;
-  overflow-x: auto !important;
-  overflow-y: auto !important;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-
-.hand-pointer {
-  cursor: pointer !important;
-}
-
-.hand-not-allowed {
-  cursor: not-allowed !important;
-}
-
-.hand-grab {
-  cursor: grab !important;
-}
-
-.items-center {
-  align-items: center !important;
-}
-
-
-.hide-scrollbar {
-  &::-webkit-scrollbar {
-    background: transparent;
-    width: 0;
-
-    /* make scrollbar transparent */
-  }
-}
 
 .overflow-hidden {
   overflow: hidden !important;
@@ -50,19 +13,3 @@
   user-select: none;
 }
 
-.rotate {
-  transform: rotate(0deg) !important;
-  transition: all 45ms ease-in-out !important;
-
-  &.rotate-0 {
-    transform: rotate(0deg) !important;
-  }
-
-  &.rotate-180 {
-    transform: rotate(180deg) !important;
-  }
-
-  &.rotate--180 {
-    transform: rotate(-180deg) !important;
-  }
-}

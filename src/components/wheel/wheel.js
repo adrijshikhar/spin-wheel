@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
+import FullProgressArrow from "../../common/fullProgressArrow";
+import EmptyProgressArrow from "../../common/emptyProgressArrow";
+
 const Wheel = () => {
   const [center, setCenter] = useState({ x: 0, y: 0 });
   const [animateAngle, setAnimateAngle] = useState(0);
   const [duration, setDuration] = useState(0.001);
-  const refEl = useRef(null);
+  const [progressWidth, setProgressWidth] = useState(0);
+  const [charge, setCharge] = useState(0);
 
+  const refEl = useRef(null);
+  const fullProgressArrowRef = useRef(null);
+  const deltaAngle = (pR, cR) => {
+    return pR - cR;
+  };
   useEffect(() => {
     if (center.x === 0) {
       const {
@@ -24,11 +33,16 @@ const Wheel = () => {
 
   useEffect(() => {
     if (center.x !== 0) {
-      let active = false;
-      let R2D = 180 / Math.PI;
-      let startAngle = 0;
-      let angle = 0;
-      let rotation = 0;
+      let active = false,
+        R2D = 180 / Math.PI,
+        startAngle = 0,
+        angle = 0,
+        rotation = 0,
+        pR = 0,
+        progress = 0;
+
+      const dprogress = 1;
+      console.log(fullProgressArrowRef);
       refEl.current.addEventListener("mouseup", (e) => {
         e.preventDefault();
         angle += rotation;
@@ -53,7 +67,20 @@ const Wheel = () => {
         let y = e.clientY - center.y;
         let d = R2D * Math.atan2(y, x);
         rotation = d - startAngle;
-        console.log(rotation);
+        // console.log(rotation);
+        let dangle = deltaAngle(pR, rotation);
+        if (dangle > 0) {
+          if (progress < 250) {
+            progress += dprogress;
+          }
+        } else {
+          if (progress > 0) {
+            progress -= dprogress;
+          }
+        }
+
+        setProgressWidth(progress);
+        pR = rotation;
         return (refEl.current.style.webkitTransform = `rotate(${
           angle + rotation
         }deg)`);
@@ -61,42 +88,49 @@ const Wheel = () => {
     }
   }, [center]);
   return (
-    <div className="wheel-container">
-      <div className="wheel" ref={refEl}>
-        <motion.div
-          animate={{ rotate: animateAngle }}
-          transition={{ duration }}
-          className="inner-wheel"
-          id="wheel-rotate"
-        >
-          <div className="sec">
-            <span className="fa fa-bell-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-comment-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-smile-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-heart-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-star-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-lightbulb-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-lightbulb-o"></span>
-          </div>
-          <div className="sec">
-            <span className="fa fa-lightbulb-o"></span>
-          </div>
-        </motion.div>
+    <div className="spin-container">
+      <div className="wheel-container">
+        <div className="wheel" ref={refEl}>
+          <motion.div
+            animate={{ rotate: animateAngle }}
+            transition={{ duration }}
+            className="inner-wheel"
+            id="wheel-rotate"
+          >
+            <div className="sec">
+              <span className="fa fa-bell-o"></span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-comment-o"></span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-smile-o"></span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-heart-o"></span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-star-o"></span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-lightbulb-o"></span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-lightbulb-o"></span>
+            </div>
+            <div className="sec">
+              <span className="fa fa-lightbulb-o"></span>
+            </div>
+          </motion.div>
+        </div>
+        <div className="spin-container" id="spin">
+          <div className="spin-inner" />
+        </div>
       </div>
-      <div className="spin-container" id="spin">
-        <div className="spin-inner" />
+      <div className="progress-container">
+        <div className="vertical-seperator" />
+        <FullProgressArrow progressWidth={progressWidth} />
+        <EmptyProgressArrow />
       </div>
     </div>
   );
