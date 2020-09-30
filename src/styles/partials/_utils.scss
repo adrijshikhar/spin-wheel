@@ -13,3 +13,22 @@
   user-select: none;
 }
 
+.fallback-spinner {
+  @include full-screen-parent;
+  @include display-column;
+  @include align-justify-center;
+}
+
+.error-container {
+  @extend .fs-l;
+  @include full-screen-parent;
+  @include display-column;
+  @include align-justify-center;
+
+  background-color: $grey-100;
+
+  .error-boundary-icon {
+    height: 7.5rem;
+    width: 7.5rem;
+  }
+}

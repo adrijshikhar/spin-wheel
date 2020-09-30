@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import $ from "jquery";
 
-import Stopper from "../../common/stopper";
-import FullProgressArrow from "../../common/fullProgressArrow";
-import EmptyProgressArrow from "../../common/emptyProgressArrow";
+import Stopper from "../common/stopper";
+import FullProgressArrow from "../common/fullProgressArrow";
+import EmptyProgressArrow from "../common/emptyProgressArrow";
 
 const Wheel = () => {
   const [center, setCenter] = useState({ x: 0, y: 0 });
@@ -127,6 +127,7 @@ const Wheel = () => {
       });
     }
   }, [center]);
+
   return (
     <div className="fortune-container">
       <div className="stopper-container" id="spin">

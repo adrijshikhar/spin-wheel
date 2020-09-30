@@ -1,4 +1,5 @@
 .app {
   @include display-column;
   @include align-justify-center;
+  height: 100vh;
 }
