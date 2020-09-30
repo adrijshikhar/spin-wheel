@@ -7,6 +7,7 @@ import Stopper from "../common/stopper";
 import FullProgressArrow from "../common/fullProgressArrow";
 import EmptyProgressArrow from "../common/emptyProgressArrow";
 import { addDetails } from "../../actions/sheetActions";
+import { Link } from "react-router-dom";
 const Wheel = () => {
   const INR_SYMBOL = "₹";
 
@@ -26,7 +27,10 @@ const Wheel = () => {
     ];
     dispatch(addDetails(data));
   };
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    window.location.reload();
+  };
   const handleShow = () => setShow(true);
 
   const refEl = useRef(null);
@@ -235,9 +239,7 @@ const Wheel = () => {
           </div>
         </div>
         <div className="spin-container" onClick={clickSpin}>
-          <div className="spin-inner">
-            Spin
-          </div>
+          <div className="spin-inner">Spin</div>
         </div>
       </div>
       <div className="progress-container">
@@ -251,9 +253,11 @@ const Wheel = () => {
         </Modal.Header>
         <Modal.Body>Do you wanna play again?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            No
-          </Button>
+          <Link to="/">
+            <Button variant="secondary">
+              No
+            </Button>
+          </Link>
           <Button variant="primary" onClick={handleClose}>
             Yes
           </Button>

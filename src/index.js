@@ -3,23 +3,29 @@ import * as OfflinePluginRuntime from "offline-plugin/runtime";
 
 import { render } from "react-dom";
 import { Provider } from "react-redux";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./styles/main.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 import ErrorBoundary from "./components/error/ErrorBoundary";
 import CustomSpinner from "./components/common/CustomSpinner";
 import store from "./store";
 
-const App = lazy(() => import("./App"));
+const Home = lazy(() => import("./views/home"));
+const Game = lazy(() => import("./views/game"));
 
 OfflinePluginRuntime.install();
 
 const Index = () => {
   return (
-    <div>
+    <div className="app">
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
@@ -32,9 +38,13 @@ const Index = () => {
         pauseOnHover
       />
       <ErrorBoundary>
-        <Suspense fallback={<CustomSpinner className="fallback-spinner text-primary" />}>
+        <Suspense
+          fallback={<CustomSpinner className="fallback-spinner text-primary" />}
+        >
           <Switch>
-            <Route path="/" component={App} />
+            <Route exact path="/" component={Home} />
+            <Route  path="/game" component={Game} />
+            <Redirect to="/" />
           </Switch>
         </Suspense>
       </ErrorBoundary>

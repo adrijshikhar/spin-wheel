@@ -1,0 +1,8 @@
+.help-container {
+  @extend .fs-l;
+  padding: 1rem;
+  height: 4rem;
+  .get-help {
+    color: $yellow-600;
+  }
+}

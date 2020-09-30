@@ -1,0 +1,8 @@
+.game-container {
+  @include display-column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100vh;
+  position: relative;
+
+}

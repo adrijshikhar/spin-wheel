@@ -1,0 +1,15 @@
+.home-container {
+  @include display-column;
+  @include align-justify-center;
+  .spinning-wheel {
+    animation: logo-spin infinite 20s linear;
+  }
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

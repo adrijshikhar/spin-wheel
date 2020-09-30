@@ -1,0 +1,23 @@
+.desc-container {
+  justify-self: flex-end;
+  @include display-column;
+  @include align-justify-center;
+  height: 10rem;
+  width: 24rem;
+  background-color: $white;
+  border-radius: 1rem;
+  margin-top: 1rem;
+
+  .desc-header {
+    @extend .fs-xxxl;
+    text-align: center;
+    padding: 1rem;
+    color: $black;
+  }
+  .desc-para {
+    @extend .fs-m;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.58);
+    padding: 0 1rem 1rem 1rem;
+  }
+}
