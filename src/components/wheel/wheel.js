@@ -13,10 +13,14 @@ const Wheel = () => {
 
   const [center, setCenter] = useState({ x: 0, y: 0 });
   const [progressWidth, setProgressWidth] = useState(0);
+  const [spinning, setSpinning] = useState(false);
   const [winIndex, setWinIndex] = useState(0);
   const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
+
+  const refEl = useRef(null);
+
   const addSheetData = () => {
     const data = [
       {
@@ -27,16 +31,18 @@ const Wheel = () => {
     ];
     dispatch(addDetails(data));
   };
+
   const handleClose = () => {
     setShow(false);
     window.location.reload();
   };
+
   const handleShow = () => setShow(true);
 
-  const refEl = useRef(null);
   const deltaAngle = (pR, cR) => {
     return pR - cR;
   };
+
   const spin = (progress) => {
     var degree = 1800;
 
@@ -47,20 +53,24 @@ const Wheel = () => {
       });
     });
   };
+
   const clickSpin = () => {
-    var degree = 1800,
-      clicks = 1;
+    if (!spinning) {
+      var degree = 1800,
+        clicks = 1;
 
-    var newDegree = degree * clicks;
-    var extraDegree = Math.floor(Math.random() * (360 - 1 + 1)) + 1,
-      totalDegree = newDegree + extraDegree;
+      var newDegree = degree * clicks;
+      var extraDegree = Math.floor(Math.random() * (360 - 1 + 1)) + 1,
+        totalDegree = newDegree + extraDegree;
 
-    $(".wheel .sec").each(function () {
-      $(".inner-wheel").css({
-        transform: "rotate(" + totalDegree + "deg)",
+      $(".wheel .sec").each(function () {
+        $(".inner-wheel").css({
+          transform: "rotate(" + totalDegree + "deg)",
+        });
       });
-    });
+    }
   };
+
   useEffect(() => {
     if (center.x === 0) {
       const {
@@ -74,7 +84,7 @@ const Wheel = () => {
         y: offsetHeight / 2 + offsetTop,
       });
     }
-  });
+  },[]);
 
   useEffect(() => {
     if (center.x !== 0) {
@@ -183,14 +193,15 @@ const Wheel = () => {
   }, [center]);
 
   useEffect(() => {
-    if (winIndex != 0) {
+    if (winIndex !== 0) {
       addSheetData();
       handleShow();
+      setSpinning(false);
     }
   }, [winIndex]);
 
   return (
-    <div className="fortune-container">
+    <div className="fortune-container unselectable">
       <div className="stopper-container" id="spin">
         <Stopper />
       </div>
@@ -238,7 +249,13 @@ const Wheel = () => {
             </div>
           </div>
         </div>
-        <div className="spin-container" onClick={clickSpin}>
+        <div
+          className="spin-container"
+          onClick={() => {
+            setSpinning(true);
+            clickSpin();
+          }}
+        >
           <div className="spin-inner">Spin</div>
         </div>
       </div>
@@ -254,9 +271,7 @@ const Wheel = () => {
         <Modal.Body>Do you wanna play again?</Modal.Body>
         <Modal.Footer>
           <Link to="/">
-            <Button variant="secondary">
-              No
-            </Button>
+            <Button variant="secondary">No</Button>
           </Link>
           <Button variant="primary" onClick={handleClose}>
             Yes
