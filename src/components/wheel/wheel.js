@@ -102,45 +102,46 @@ const Wheel = () => {
         "webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend",
         function (event) {
           event.preventDefault();
-
-          const c = event.target.style.transform,
-            rd = c.split("(")[1].split(")")[0],
-            ra = parseInt(rd.substring(0, rd.length - 3)),
-            rm = ra % 360;
-          let i = 0;
-          switch (true) {
-            case 337.5 <= rm && rm < 22.5:
-              i = 1;
-              break;
-            case 22.5 <= rm && rm < 67.5:
-              i = 2;
-              break;
-            case 67.5 <= rm && rm < 112.5:
-              i = 3;
-              break;
-            case 112.5 <= rm && rm < 157.5:
-              i = 4;
-              break;
-            case 157.5 <= rm && rm < 202.5:
-              i = 5;
-              break;
-            case 202.5 <= rm && rm < 247.5:
-              i = 6;
-              break;
-            case 247.5 <= rm && rm < 292.5:
-              i = 7;
-              break;
-            case 292.5 <= rm && rm < 337.5:
-              i = 8;
-              break;
-            default:
-              i = 0;
+          if (event.target.style.transform) {
+            const c = event.target.style.transform,
+              rd = c.split("(")[1].split(")")[0],
+              ra = parseInt(rd.substring(0, rd.length - 3)),
+              rm = ra % 360;
+            let i = 0;
+            switch (true) {
+              case 337.5 <= rm && rm < 22.5:
+                i = 1;
+                break;
+              case 22.5 <= rm && rm < 67.5:
+                i = 2;
+                break;
+              case 67.5 <= rm && rm < 112.5:
+                i = 3;
+                break;
+              case 112.5 <= rm && rm < 157.5:
+                i = 4;
+                break;
+              case 157.5 <= rm && rm < 202.5:
+                i = 5;
+                break;
+              case 202.5 <= rm && rm < 247.5:
+                i = 6;
+                break;
+              case 247.5 <= rm && rm < 292.5:
+                i = 7;
+                break;
+              case 292.5 <= rm && rm < 337.5:
+                i = 8;
+                break;
+              default:
+                i = 0;
+            }
+            setWinIndex(i);
           }
-          setWinIndex(i);
         }
       );
 
-      refEl.current.addEventListener("mouseup", (e) => {
+      $(refEl.current).on("mouseup ontouchend", (e) => {
         e.preventDefault();
         angle += rotation;
         if (dangle > 0 && progress > 80) {
@@ -150,19 +151,16 @@ const Wheel = () => {
         }
         return (active = false);
       });
-      refEl.current.addEventListener(
-        "mousedown",
-        function (e) {
-          e.preventDefault();
-          const x = e.clientX - center.x;
-          const y = e.clientY - center.y;
-          startAngle = R2D * Math.atan2(y, x);
-          return (active = true);
-        },
-        false
-      );
 
-      refEl.current.addEventListener("mousemove", (e) => {
+      $(refEl.current).on("mousedown ontouchstart", (e) => {
+        e.preventDefault();
+        const x = e.clientX - center.x;
+        const y = e.clientY - center.y;
+        startAngle = R2D * Math.atan2(y, x);
+        return (active = true);
+      });
+
+      $(refEl.current).on("mousemove ontouchmove", (e) => {
         if (!active) return;
         e.preventDefault();
         let x = e.clientX - center.x;
