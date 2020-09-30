@@ -84,7 +84,7 @@ const Wheel = () => {
         y: offsetHeight / 2 + offsetTop,
       });
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (center.x !== 0) {
@@ -202,8 +202,19 @@ const Wheel = () => {
 
   return (
     <div className="fortune-container unselectable">
-      <div className="stopper-container" id="spin">
-        <Stopper />
+      <div className="spin-parent">
+        <div className="stopper-container" id="spin">
+          <Stopper />
+        </div>
+        <div
+          className="spin-container"
+          onClick={() => {
+            setSpinning(true);
+            clickSpin();
+          }}
+        >
+          <div className="spin-inner">Spin</div>
+        </div>
       </div>
       <div className="wheel-container">
         <div className="wheel" ref={refEl}>
@@ -248,15 +259,6 @@ const Wheel = () => {
               </span>
             </div>
           </div>
-        </div>
-        <div
-          className="spin-container"
-          onClick={() => {
-            setSpinning(true);
-            clickSpin();
-          }}
-        >
-          <div className="spin-inner">Spin</div>
         </div>
       </div>
       <div className="progress-container">
