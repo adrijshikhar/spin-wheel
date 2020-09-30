@@ -23,7 +23,7 @@ const apiError = (error) => {
   };
 };
 
-export const getData = () => {
+export const getDetails = () => {
   return async (dispatch) => {
     dispatch(apiDispatch(SHEETS_GET_DATA_PENDING, true));
     try {
@@ -40,7 +40,7 @@ export const getData = () => {
   };
 };
 
-export const addDetails = (data = []) => {
+export const addDetails = (data) => {
   return async (dispatch) => {
     dispatch(apiDispatch(SHEETS_ADD_DATA_PENDING, true));
     try {
@@ -49,7 +49,7 @@ export const addDetails = (data = []) => {
       const moreRows = await sheet.addRows(data);
       dispatch(apiDispatch(SHEETS_ADD_DATA_PENDING, false));
       dispatch(apiDispatch(SHEETS_ADD_DATA, moreRows));
-      dispatch(toastSuccessMessage("Data fetched successfully"));
+      dispatch(toastSuccessMessage("Data uploaded successfully"));
     } catch (err) {
       dispatch(apiError(err));
       dispatch(toastErrorMessage(err));

@@ -8,6 +8,13 @@
   }
   .wheel-container {
     @include display-row;
+    .rotate-fast {
+      -webkit-transition: all 1s ease-in-out;
+      -moz-transition: all 1 ease-in-out;
+      -o-transition: all 1s ease-in-out;
+      -ms-transition: all 1s ease-in-out;
+      transition: all 1s ease-in-out;
+    }
     .wheel {
       width: 24rem;
       height: 24rem;
@@ -27,12 +34,14 @@
         );
         width: 100%;
         height: 100%;
+        transform: rotate(0deg);
         -webkit-transition: all 6s cubic-bezier(0, 0.99, 0.44, 0.99);
         -moz-transition: all 6 cubic-bezier(0, 0.99, 0.44, 0.99);
         -o-transition: all 6s cubic-bezier(0, 0.99, 0.44, 0.99);
         -ms-transition: all 6s cubic-bezier(0, 0.99, 0.44, 0.99);
         transition: all 6s cubic-bezier(0, 0.99, 0.44, 0.99);
       }
+
       .sec {
         position: absolute;
         width: 0;
@@ -159,7 +168,12 @@
       right: 0;
       border-radius: 50%;
       z-index: 100;
+      cursor: pointer;
       .spin-inner {
+        @extend .fs-xxxxxl;
+        @extend .fw-bolder;
+        @include display-row;
+        @include align-justify-center;
         background-color: $yellow-500;
         width: 6rem;
         height: 6rem;

@@ -1,26 +1,31 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import $ from "jquery";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Stopper from "../common/stopper";
 import FullProgressArrow from "../common/fullProgressArrow";
 import EmptyProgressArrow from "../common/emptyProgressArrow";
-import { getDetails, addDetails, getData } from "../../actions/sheetActions";
+import { addDetails } from "../../actions/sheetActions";
 const Wheel = () => {
   const INR_SYMBOL = "₹";
 
   const [center, setCenter] = useState({ x: 0, y: 0 });
   const [progressWidth, setProgressWidth] = useState(0);
+  const [winIndex, setWinIndex] = useState(0);
   const [show, setShow] = useState(false);
 
-  const { dataList, addData } = useSelector((state) => state.sheetsReducer);
-
   const dispatch = useDispatch();
-  const getSheetsData = () => {
-    dispatch(addDetails());
+  const addSheetData = () => {
+    const data = [
+      {
+        timestamp: Date.now(),
+        web_client: "web-pwa",
+        spin_result_index: winIndex,
+      },
+    ];
+    dispatch(addDetails(data));
   };
-  console.log(addData);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -31,33 +36,24 @@ const Wheel = () => {
   const spin = (progress) => {
     var degree = 1800;
 
-    /*multiply the degree by number of clicks
-	  generate random number between 1 - 360,
-    then add to the new degree*/
     var newDegree = degree * progress;
     $(".wheel .sec").each(function () {
-      // var t = $(this);
-
-      // var c = 0;
-      // var n = 700;
-      // var interval = setInterval(function () {
-      //   c++;
-      //   if (c === n) {
-      //     clearInterval(interval);
-      //   }
-
-      //   var aoY = t.offset().top;
-      //   console.log(aoY);
-      //   if (aoY < 300) {
-      //     $("#spin").addClass("spin");
-      //     setTimeout(function () {
-      //       $("#spin").removeClass("spin");
-      //     }, 100);
-      //   }
-      // }, 10);
-
       $(".inner-wheel").css({
         transform: "rotate(" + newDegree + "deg)",
+      });
+    });
+  };
+  const clickSpin = () => {
+    var degree = 1800,
+      clicks = 1;
+
+    var newDegree = degree * clicks;
+    var extraDegree = Math.floor(Math.random() * (360 - 1 + 1)) + 1,
+      totalDegree = newDegree + extraDegree;
+
+    $(".wheel .sec").each(function () {
+      $(".inner-wheel").css({
+        transform: "rotate(" + totalDegree + "deg)",
       });
     });
   };
@@ -88,10 +84,52 @@ const Wheel = () => {
         dangle;
 
       const dprogress = 1;
+      $(".inner-wheel").on(
+        "webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend",
+        function (event) {
+          event.preventDefault();
+
+          const c = event.target.style.transform,
+            rd = c.split("(")[1].split(")")[0],
+            ra = parseInt(rd.substring(0, rd.length - 3)),
+            rm = ra % 360;
+          let i = 0;
+          switch (true) {
+            case 337.5 <= rm && rm < 22.5:
+              i = 1;
+              break;
+            case 22.5 <= rm && rm < 67.5:
+              i = 2;
+              break;
+            case 67.5 <= rm && rm < 112.5:
+              i = 3;
+              break;
+            case 112.5 <= rm && rm < 157.5:
+              i = 4;
+              break;
+            case 157.5 <= rm && rm < 202.5:
+              i = 5;
+              break;
+            case 202.5 <= rm && rm < 247.5:
+              i = 6;
+              break;
+            case 247.5 <= rm && rm < 292.5:
+              i = 7;
+              break;
+            case 292.5 <= rm && rm < 337.5:
+              i = 8;
+              break;
+            default:
+              i = 0;
+          }
+          setWinIndex(i);
+        }
+      );
+
       refEl.current.addEventListener("mouseup", (e) => {
         e.preventDefault();
         angle += rotation;
-        if (dangle > 0 && progress > 82) {
+        if (dangle > 0 && progress > 80) {
           spin(progress / 100);
           progress = 0;
           setProgressWidth(0);
@@ -118,6 +156,10 @@ const Wheel = () => {
         let d = R2D * Math.atan2(y, x);
         rotation = d - startAngle;
         dangle = deltaAngle(pR, rotation);
+        if (Math.abs(dangle) > 10) {
+          rotation -= 360;
+          dangle += 360;
+        }
         if (dangle > 0) {
           if (progress < 250) {
             progress += dprogress;
@@ -127,7 +169,6 @@ const Wheel = () => {
             progress -= dprogress;
           }
         }
-
         setProgressWidth(progress);
         pR = rotation;
         return (refEl.current.style.webkitTransform = `rotate(${
@@ -137,6 +178,13 @@ const Wheel = () => {
     }
   }, [center]);
 
+  useEffect(() => {
+    if (winIndex != 0) {
+      addSheetData();
+      handleShow();
+    }
+  }, [winIndex]);
+
   return (
     <div className="fortune-container">
       <div className="stopper-container" id="spin">
@@ -144,7 +192,7 @@ const Wheel = () => {
       </div>
       <div className="wheel-container">
         <div className="wheel" ref={refEl}>
-          <div className="inner-wheel" id="wheel-rotate">
+          <div className="inner-wheel">
             <div className="sec">
               <span className="sec-text">
                 Better luck <br /> next time!
@@ -186,8 +234,10 @@ const Wheel = () => {
             </div>
           </div>
         </div>
-        <div className="spin-container">
-          <div className="spin-inner" />
+        <div className="spin-container" onClick={clickSpin}>
+          <div className="spin-inner">
+            Spin
+          </div>
         </div>
       </div>
       <div className="progress-container">
@@ -195,17 +245,17 @@ const Wheel = () => {
         <FullProgressArrow progressWidth={progressWidth} />
         <EmptyProgressArrow />
       </div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Game over</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>Do you wanna play again?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            No
           </Button>
           <Button variant="primary" onClick={handleClose}>
-            Save Changes
+            Yes
           </Button>
         </Modal.Footer>
       </Modal>

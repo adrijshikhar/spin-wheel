@@ -1,5 +1,12 @@
+@font-face {
+  font-family: "Metropolis";
+  src: url("../../fonts/Metropolis-Regular.woff") format("woff"),
+    url("../../fonts/Metropolis-Bold.woff") format("woff"),
+    url("../../fonts/Metropolis-SemiBold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 %font-base {
-  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
 }
