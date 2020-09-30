@@ -7,6 +7,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./styles/main.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 import ErrorBoundary from "./components/error/ErrorBoundary";
 import CustomSpinner from "./components/common/CustomSpinner";

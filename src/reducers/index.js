@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import userReducer from "./sheetsReducer";
+import sheetsReducer from "./sheetsReducer";
 import toastreducer from "./toastreducer";
 
 const appReducer = combineReducers({
-  userReducer,
+  sheetsReducer,
   toastreducer,
 });
 

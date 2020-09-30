@@ -17,7 +17,7 @@ const initialState = {
   addData: {},
 };
 
-export default function boqReducer(
+export default function sheetsReducer(
   state = initialState,
   { type, payload, error }
 ) {
@@ -25,7 +25,7 @@ export default function boqReducer(
     case SHEETS_ADD_DATA:
       return {
         ...state,
-        addData: payload,
+        addData: payload.data,
       };
     case SHEETS_ADD_DATA_PENDING:
       return {
@@ -35,7 +35,7 @@ export default function boqReducer(
     case SHEETS_GET_DATA:
       return {
         ...state,
-        dataList: payload,
+        dataList: payload.data,
       };
     case SHEETS_GET_DATA_PENDING:
       return {

@@ -1,16 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import $ from "jquery";
+import { useSelector, useDispatch } from "react-redux";
 
 import Stopper from "../common/stopper";
 import FullProgressArrow from "../common/fullProgressArrow";
 import EmptyProgressArrow from "../common/emptyProgressArrow";
-
+import { getDetails } from "../../actions/sheetActions";
 const Wheel = () => {
+  const INR_SYMBOL = "₹";
+
   const [center, setCenter] = useState({ x: 0, y: 0 });
   const [progressWidth, setProgressWidth] = useState(0);
   const [show, setShow] = useState(false);
-  const INR_SYMBOL = "₹";
+
+  const { dataList } = useSelector((state) => state.sheetsReducer);
+
+  const dispatch = useDispatch();
+  const getSheetsData = () => {
+    dispatch(getDetails());
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -54,6 +63,7 @@ const Wheel = () => {
   };
   useEffect(() => {
     if (center.x === 0) {
+      getSheetsData();
       const {
         offsetHeight,
         offsetTop,

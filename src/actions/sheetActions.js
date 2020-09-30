@@ -1,3 +1,5 @@
+import { stringify } from "query-string";
+
 import sheetsAPIClient from "../helpers/sheetsAPIClient";
 import {
   SHEETS_ADD_DATA,
@@ -10,6 +12,7 @@ import {
 import { toastSuccessMessage, toastErrorMessage } from "./toastactions";
 
 const API_KEY = process.env.REACT_APP_SHEETS_API_KEY || "";
+const spreadsheetId = "1l2fYCmFbo751VHO-AB6TN3V8OKSTJUhQEHhbk4--dts";
 
 const apiDispatch = (actionType = "", data) => {
   return {
@@ -25,20 +28,24 @@ const apiError = (error) => {
   };
 };
 
+const getURL = ({ params = "", query = "" }) => {
+  return `/${spreadsheetId}/values/Sheet1${params}/?${query}`;
+};
+
 export const getDetails = () => {
+  const apiURL = getURL({ query: stringify({ key: API_KEY }) });
   return (dispatch) => {
     dispatch(apiDispatch(SHEETS_GET_DATA_PENDING, true));
-
-    sheetsAPIClient(API_KEY, (err, res) => {
-      dispatch(apiDispatch(SHEETS_GET_DATA_PENDING, false));
-
-      if (err) {
+    sheetsAPIClient
+      .get(apiURL)
+      .then((res) => {
+        dispatch(apiDispatch(SHEETS_GET_DATA_PENDING, false));
+        dispatch(apiDispatch(SHEETS_GET_DATA, res));
+        dispatch(toastSuccessMessage("Data fetched successfully"));
+      })
+      .catch((err) => {
         dispatch(apiError(err));
-        return dispatch(toastErrorMessage(err));
-      }
-      const rows = res.data.values;
-      dispatch(toastSuccessMessage("Data fetched successfully"));
-      dispatch(apiDispatch(rows, SHEETS_GET_DATA));
-    });
+        dispatch(toastErrorMessage(err));
+      });
   };
 };
