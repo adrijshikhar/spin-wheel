@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Stopper from "../common/stopper";
 import FullProgressArrow from "../common/fullProgressArrow";
 import EmptyProgressArrow from "../common/emptyProgressArrow";
-import { getDetails } from "../../actions/sheetActions";
+import { getDetails, addDetails, getData } from "../../actions/sheetActions";
 const Wheel = () => {
   const INR_SYMBOL = "₹";
 
@@ -14,13 +14,13 @@ const Wheel = () => {
   const [progressWidth, setProgressWidth] = useState(0);
   const [show, setShow] = useState(false);
 
-  const { dataList } = useSelector((state) => state.sheetsReducer);
+  const { dataList, addData } = useSelector((state) => state.sheetsReducer);
 
   const dispatch = useDispatch();
   const getSheetsData = () => {
-    dispatch(getDetails());
+    dispatch(addDetails());
   };
-
+  console.log(addData);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -63,7 +63,6 @@ const Wheel = () => {
   };
   useEffect(() => {
     if (center.x === 0) {
-      getSheetsData();
       const {
         offsetHeight,
         offsetTop,
