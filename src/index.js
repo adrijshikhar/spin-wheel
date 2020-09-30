@@ -1,5 +1,4 @@
 import React, { Suspense, lazy } from "react";
-import * as OfflinePluginRuntime from "offline-plugin/runtime";
 
 import { render } from "react-dom";
 import { Provider } from "react-redux";
@@ -20,8 +19,6 @@ import store from "./store";
 
 const Home = lazy(() => import("./views/home"));
 const Game = lazy(() => import("./views/game"));
-
-OfflinePluginRuntime.install();
 
 const Index = () => {
   return (
